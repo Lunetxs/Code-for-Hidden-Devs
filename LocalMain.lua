@@ -9,11 +9,11 @@ local Camera = workspace.CurrentCamera
 local CameraShake = require(game.ReplicatedStorage.Modules.CameraShaker)
 
 
-local Get : boolean = false
+local Get: boolean = false
 
 local Object :Part
 
-local Debounce : boolean = false
+local Debounce = false
 
 
 
@@ -32,7 +32,7 @@ local function CreateBlocksSphereOutline(point: Vector3,
 	params.FilterDescendantsInstances = {workspace.Map}
 
 	local ray = workspace:Raycast(point, Vector3.new(0, -20, 0), params)
-	if not ray then return end
+	if not ray then Object:Destroy() Get = false Debounce = false return end
 
 	local parts = {}
 
@@ -77,10 +77,6 @@ end
 UserInputService.InputBegan:Connect(function(input, event)
 	if input.KeyCode == Enum.KeyCode.Q and not event and not Debounce then
 		if Get then
-			Debounce = true
-			Get = false
-			
-			
 			local Mouse = Player:GetMouse()
 			local MousePosition = Mouse.Hit.Position
 			
@@ -88,6 +84,9 @@ UserInputService.InputBegan:Connect(function(input, event)
 			params.FilterType = Enum.RaycastFilterType.Include
 			params.FilterDescendantsInstances = {workspace.Map:GetDescendants()}
 			local raycast = workspace:Raycast(MousePosition + Vector3.new(0,2,0), Vector3.new(0, -20,0), params)
+			if not raycast then return end
+			Debounce = true
+			Get = false
 			if raycast then
 				
 				
@@ -157,8 +156,6 @@ UserInputService.InputBegan:Connect(function(input, event)
 			end
 			
 		else
-			Debounce = true
-			Get = true
 			local Mouse = Player:GetMouse()
 			local MousePosition = Mouse.Hit.Position
 
@@ -166,6 +163,9 @@ UserInputService.InputBegan:Connect(function(input, event)
 			params.FilterType = Enum.RaycastFilterType.Include
 			params.FilterDescendantsInstances = {workspace:GetDescendants()}
 			local raycast = workspace:Raycast(MousePosition + Vector3.new(0,2,0), Vector3.new(0, -20,0), params)
+			if not raycast then return end
+			Debounce = true
+			Get = true
 			if raycast then
 				
 				Object = game.ReplicatedStorage.Assets.Object:Clone()
