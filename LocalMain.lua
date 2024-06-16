@@ -83,7 +83,7 @@ end
 
 
 
--- Reading iser uiput
+-- Reading user uiput
 UserInputService.InputBegan:Connect(function(input, event)
 	if input.KeyCode == Enum.KeyCode.Q and not event and not Debounce then
 		if Get then
